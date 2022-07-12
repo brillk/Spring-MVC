@@ -36,6 +36,8 @@ public class RequestParamServlet extends HttpServlet {
         for (String name : usernames) {
             System.out.println("username = " + name);
         }
-        resp.getWriter();
+        resp.getWriter().write("ok");
+
+        //request.getParameter()는 GET, POST의 형식 둘 다 지원한다
     }
 }
