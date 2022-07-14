@@ -69,6 +69,8 @@ public class RequestBodyStringController {
        return new HttpEntity<>("ok");
     }
 
+
+    // 이게 최종 형태인가? 확실히 v1보다 많이 줄어들긴하네 / 실무에서 많이 쓰는 편
     @ResponseBody
     @PostMapping("/request-body-string-v4")
     public String requestBodyStringV4(@RequestBody String messageBody) {
