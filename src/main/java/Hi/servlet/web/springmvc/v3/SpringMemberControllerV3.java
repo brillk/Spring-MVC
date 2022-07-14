@@ -16,7 +16,7 @@ public class SpringMemberControllerV3 {
 
     private MemberRepository memberRepository = MemberRepository.getInstance();
 
-    @GetMapping("/new-form") // GET인 경우에만 호출된다, 제약을 걸어
+    @GetMapping("/new-form") // GET인 경우에만 호출된다,
     public String newForm() {
         return "new-form";
     }
@@ -26,7 +26,7 @@ public class SpringMemberControllerV3 {
             @RequestParam("username") String username,
             @RequestParam("age") int age,
             Model model
-        ) {
+    ) {
 
         Member member = new Member(username, age);
         memberRepository.save(member);
