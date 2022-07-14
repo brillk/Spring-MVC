@@ -26,9 +26,7 @@ public class RequestParamController {
         log.info("username={}, age={}", username, age);
 
         res.getWriter().write("ok");
-
     }
-
 
     /**
      * @RequestParam 사용
@@ -162,7 +160,7 @@ public class RequestParamController {
      */
 
     @ResponseBody
-    @RequestMapping("/model-attribute-v1")
+    @RequestMapping("/model-attribute-v2")
     public String modelAttributeV2(HelloData helloData) {
         // modelAttribute 생략 가능
         log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
