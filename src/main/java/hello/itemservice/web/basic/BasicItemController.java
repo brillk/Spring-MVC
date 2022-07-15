@@ -89,7 +89,14 @@ public class BasicItemController {
     public String addItemV4(Item item) {
         //이번엔 ModelAttribute 생략 => 단순 타입이 아니라서 가능
         itemRepository.save(item);
-        return "basic/item";
+        return "redirect:/basic/items/" + item.getId(); // post 요청이기에 새로고침할때마다 내용은 같고, ID만 다른 상품 데이터가 계속 쌓이게 된다.
+        // 1. 새로 고침 문제를 해결하려면 상품 저장 후에 뷰 템플릿으로 이동하는 것이 아니라, 상품 상세 화면으로
+        //  리다이렉트를 호출해주면 된다.
+        // 2. 웹 브라우저는 리다이렉트의 영향으로 상품 저장 후에 실제 상품 상세 화면으로 다시 이동한다. 따라서
+        // 3. 마지막에 호출한 내용이 상품 상세 화면인 GET /items/{id} 가 되는 것이다.
+        //이후 새로고침을 해도 상품 상세 화면으로 이동하게 되므로 새로 고침 문제를 해결할 수 있다
+
+        //이런 문제 해결 방식을 PRG Post/Redirect/Get 라 한다.
     }
 
     @GetMapping("/{itemId}/edit")
