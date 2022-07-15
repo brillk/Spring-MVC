@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -85,8 +86,15 @@ public class BasicItemController {
         return "basic/item";
     }
 
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV4(Item item) {
+        //이번엔 ModelAttribute 생략 => 단순 타입이 아니라서 가능
+        itemRepository.save(item);
+        return "basic/item";
+    }
+
+    //@PostMapping("/add")
+    public String addItemV5(Item item) {
         //이번엔 ModelAttribute 생략 => 단순 타입이 아니라서 가능
         itemRepository.save(item);
         return "redirect:/basic/items/" + item.getId(); // post 요청이기에 새로고침할때마다 내용은 같고, ID만 다른 상품 데이터가 계속 쌓이게 된다.
@@ -97,6 +105,15 @@ public class BasicItemController {
         //이후 새로고침을 해도 상품 상세 화면으로 이동하게 되므로 새로 고침 문제를 해결할 수 있다
 
         //이런 문제 해결 방식을 PRG Post/Redirect/Get 라 한다.
+    }
+
+    @PostMapping("/add")
+    public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
+        // 저장했다는 메시지를 출력하자
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true); // 쿼리 파라미터로 넘긴다
+        return "redirect:/basic/items/{itemId}";
     }
 
     @GetMapping("/{itemId}/edit")
