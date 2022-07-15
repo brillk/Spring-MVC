@@ -6,10 +6,7 @@ import hello.itemservice.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -44,14 +41,55 @@ public class BasicItemController {
     //상품 등록 처리: POST /basic/items/add
 
     //상품 등록 폼
-    @GetMapping("/add") //등록해서 마치면
+    @GetMapping("/add")
     public String addForm() {
         return "basic/addForm";
     }
 
-    @PostMapping("/add") // 이제 저장시킨다
-    public String save() {
-        return "basic/addForm";
+    //@PostMapping("/add")
+    public String addItemV1(
+            @RequestParam String itemName,
+            @RequestParam int price,
+            @RequestParam Integer quantity,
+            Model model) {
+
+        Item item = new Item();
+        item.setItemName(itemName);
+        item.setPrice(price);
+        item.setQuantity(quantity);
+
+        itemRepository.save(item);
+
+        model.addAttribute("item", item);
+
+        return "basic/item";
+    }
+
+
+    //@ModelAttribute 는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법(setXxx)으로
+    //입력해준다
+    //모델에 데이터를 담을 때는 이름이 필요하다. 이름은 @ModelAttribute 에 지정한 name(value) 속성을
+    //사용한다. 만약 다음과 같이 @ModelAttribute 의 이름을 다르게 지정하면 다른 이름으로 모델에 포함된다
+    //@PostMapping("/add")
+    public String addItemV2(@ModelAttribute("item") Item item) {
+
+        itemRepository.save(item);
+        //model.addAttribute("item", item); 자동 추가, 생략 가능
+        return "basic/item";
+    }
+
+    //@PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item) {
+        //이번엔 이름 생략
+        itemRepository.save(item);
+        return "basic/item";
+    }
+
+    @PostMapping("/add")
+    public String addItemV4(Item item) {
+        //이번엔 ModelAttribute 생략 => 단순 타입이 아니라서 가능
+        itemRepository.save(item);
+        return "basic/item";
     }
 
 
